@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
 import gearRoutes from "./routes/gearRoutes";
 import providerRoutes from "./routes/providerRoutes";
+import rentalRoutes from "./routes/rentalRoutes";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/gear", gearRoutes);
 app.use("/api/provider", providerRoutes);
+app.use("/api/rentals", rentalRoutes);
 
 const PORT = process.env.PORT || 5000;
 
