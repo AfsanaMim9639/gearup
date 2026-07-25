@@ -98,3 +98,29 @@ export const login = async (req: Request, res: Response) => {
     return errorResponse(res, 500, "Something went wrong", error);
   }
 };
+
+export const getMe = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id;
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        status: true,
+        createdAt: true,
+      },
+    });
+
+    if (!user) {
+      return errorResponse(res, 404, "User not found");
+    }
+
+    return successResponse(res, 200, "User fetched successfully", user);
+  } catch (error) {
+    return errorResponse(res, 500, "Something went wrong", error);
+  }
+};
