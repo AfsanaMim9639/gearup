@@ -5,6 +5,10 @@ import {
   deleteGear,
   getProviderGear,
 } from "../controllers/gearController";
+import {
+  getProviderOrders,
+  updateRentalStatus,
+} from "../controllers/rentalController";
 import { authenticate } from "../middlewares/authMiddleware";
 import { authorize } from "../middlewares/roleMiddleware";
 
@@ -16,5 +20,8 @@ router.post("/gear", createGear);
 router.put("/gear/:id", updateGear);
 router.delete("/gear/:id", deleteGear);
 router.get("/gear", getProviderGear);
+
+router.get("/orders", getProviderOrders);
+router.patch("/orders/:id", updateRentalStatus);
 
 export default router;

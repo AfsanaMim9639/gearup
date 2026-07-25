@@ -146,3 +146,69 @@ export const getRentalById = async (req: Request, res: Response) => {
     return errorResponse(res, 500, "Something went wrong", error);
   }
 };
+
+// PROVIDER: Get incoming orders for provider's gear
+export const getProviderOrders = async (req: Request, res: Response) => {
+  try {
+    const providerId = req.user?.id as string;
+
+    const rentals = await prisma.rentalOrder.findMany({
+      where: {
+        items: {
+          some: {
+            gearItem: { providerId },
+          },
+        },
+      },
+      include: {
+        items: { include: { gearItem: true } },
+        customer: { select: { id: true, name: true, email: true } },
+        payment: true,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return successResponse(res, 200, "Provider orders fetched successfully", rentals);
+  } catch (error) {
+    return errorResponse(res, 500, "Something went wrong", error);
+  }
+};
+
+// PROVIDER: Update rental order status
+export const updateRentalStatus = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const providerId = req.user?.id as string;
+
+    const validStatuses = ["CONFIRMED", "PICKED_UP", "RETURNED", "CANCELLED"];
+    if (!status || !validStatuses.includes(status)) {
+      return errorResponse(res, 400, "Invalid status value", {
+        status: `Status must be one of: ${validStatuses.join(", ")}`,
+      });
+    }
+
+    const rental = await prisma.rentalOrder.findUnique({
+      where: { id },
+      include: { items: { include: { gearItem: true } } },
+    });
+
+    if (!rental) {
+      return errorResponse(res, 404, "Rental order not found");
+    }
+
+    const ownsOrder = rental.items.some((item) => item.gearItem.providerId === providerId);
+    if (!ownsOrder) {
+      return errorResponse(res, 403, "You do not have permission to update this order");
+    }
+
+    const updated = await prisma.rentalOrder.update({
+      where: { id },
+      data: { status },
+    });
+
+    return successResponse(res, 200, "Rental order status updated successfully", updated);
+  } catch (error) {
+    return errorResponse(res, 500, "Something went wrong", error);
+  }
+};
