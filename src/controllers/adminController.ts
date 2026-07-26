@@ -26,7 +26,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 // ADMIN: Update user status (suspend/activate)
 export const updateUserStatus = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const { status } = req.body;
 
     const validStatuses = ["active", "suspended"];

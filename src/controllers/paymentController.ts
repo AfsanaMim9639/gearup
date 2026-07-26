@@ -133,7 +133,7 @@ export const getMyPayments = async (req: Request, res: Response) => {
 // Get single payment details
 export const getPaymentById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const customerId = req.user?.id as string;
 
     const payment = await prisma.payment.findUnique({

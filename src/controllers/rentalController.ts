@@ -120,7 +120,7 @@ export const getMyRentals = async (req: Request, res: Response) => {
 // Get single rental order details
 export const getRentalById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const userId = req.user?.id as string;
 
     const rental = await prisma.rentalOrder.findUnique({
@@ -177,7 +177,7 @@ export const getProviderOrders = async (req: Request, res: Response) => {
 // PROVIDER: Update rental order status
 export const updateRentalStatus = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const { status } = req.body;
     const providerId = req.user?.id as string;
 

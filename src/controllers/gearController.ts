@@ -38,7 +38,7 @@ export const getAllGear = async (req: Request, res: Response) => {
 // PUBLIC: Get single gear details
 export const getGearById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
 
     const gearItem = await prisma.gearItem.findUnique({
       where: { id },
@@ -93,7 +93,7 @@ export const createGear = async (req: Request, res: Response) => {
 // PROVIDER: Update own gear
 export const updateGear = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const providerId = req.user?.id as string;
 
     const parsed = updateGearSchema.safeParse(req.body);
@@ -124,7 +124,7 @@ export const updateGear = async (req: Request, res: Response) => {
 // PROVIDER: Delete own gear
 export const deleteGear = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
     const providerId = req.user?.id as string;
 
     const gearItem = await prisma.gearItem.findUnique({ where: { id } });
