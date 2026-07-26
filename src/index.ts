@@ -9,6 +9,7 @@ import rentalRoutes from "./routes/rentalRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
 import reviewRoutes from "./routes/reviewRoutes";
 import adminRoutes from "./routes/adminRoutes";
+import { notFoundHandler, globalErrorHandler } from "./middlewares/errorHandler";
 
 dotenv.config();
 
@@ -29,6 +30,8 @@ app.use("/api/rentals", rentalRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", adminRoutes);
+app.use(notFoundHandler);
+app.use(globalErrorHandler);
 
 const PORT = process.env.PORT || 5000;
 
