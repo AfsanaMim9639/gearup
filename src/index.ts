@@ -7,6 +7,7 @@ import gearRoutes from "./routes/gearRoutes";
 import providerRoutes from "./routes/providerRoutes";
 import rentalRoutes from "./routes/rentalRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
+import reviewRoutes from "./routes/reviewRoutes";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use("/api/gear", gearRoutes);
 app.use("/api/provider", providerRoutes);
 app.use("/api/rentals", rentalRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 const PORT = process.env.PORT || 5000;
 
